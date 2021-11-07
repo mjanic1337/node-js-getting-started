@@ -2,6 +2,8 @@
 
   <h1 class="text-4xl mb-4">Welcome <%= user.nickname %></h1>
 
+  <%- include('partials/map') -%>
+
   <% if (user.picture) { %>
     <img alt="user picture" class="block py-3" src="<%= user.picture %>" width="300">
   <% } %>
