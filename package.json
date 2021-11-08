@@ -17,7 +17,6 @@
     "express": "^4.15.2",
     "express-openid-connect": "^2.0.0",
     "http-errors": "~1.6.2",
-    "mapbox-gl": "^2.5.1",
     "morgan": "~1.9.0"
   },
   "devDependencies": {

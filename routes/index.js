@@ -1,7 +1,7 @@
 var router = require('express').Router();
 const { requiresAuth } = require('express-openid-connect');
 
-var locList = [
+var infoList = [
 ]
 
 router.get('/', function (req, res, next) {
@@ -19,11 +19,31 @@ router.get('/profile', requiresAuth(), function (req, res, next) {
 });
 
 router.post('/location', requiresAuth(), function (req, res, next) {
-  console.log(req.body);
-  if (Object.keys(req.body).length !== 0 && locList.push(req.body) > 5) {
-    locList.shift();
+  if (Object.keys(req.body).length !== 0) {
+    let ts = Date.now();
+    let date_ob = new Date(ts);
+    let date = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+    let datestring = date + "." + month + "." + year + " " + hours + ":" + minutes + ":" + seconds
+
+    let info = {
+      email: req.oidc.user.email,
+      date: datestring,
+      loc: req.body
+    }
+
+    const index = infoList.findIndex(e => e.email === info.email)
+    if (index > -1) {
+      infoList[index] = info;
+    } else if (infoList.push(info) > 5) {
+      infoList.shift();
+    }
   }
-  return res.status(200).json(locList);
+  return res.status(200).json(infoList);
 });
 
 module.exports = router;
